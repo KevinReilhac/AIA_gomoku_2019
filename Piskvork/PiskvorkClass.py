@@ -10,18 +10,22 @@ import fileinput
 import string
 import array
 from Piskvork.InfosClass import Infos
+from Piskvork.GameClass import Game, CaseState
+from AI.EmacsBrain import EmacsBrain
 
 
 class Piskvork:
     infos = Infos()
     quit_loop = False
+    game = None
+    brain = None
 
     def read_entry_loop(self):
         try:
             for line in fileinput.input():
+                self.treat_input(line)
                 if (self.quit_loop):
                     break
-                self.treat_input(line)
         except EOFError:
             pass
         except KeyboardInterrupt:
@@ -31,6 +35,8 @@ class Piskvork:
         line = line.lower()
         line = line.strip()
         arguments = line.split()
+        if (len(arguments) == 0):
+            return
         command = self._get_function_from_name(arguments[0])
         if (command == AttributeError):
             self.unknow(arguments[0].upper())
@@ -55,12 +61,39 @@ class Piskvork:
     #-------------------------------[Commands]---------------------------------#
 
     def start(self, arguments : list):
-        print("debug start")
-        pass
+        size = 0
+        error_message = "unsupported size or other error"
+
+        if (len(arguments) != 2):
+            self.error(error_message)
+        try:
+            size = int(arguments[0])
+        except ValueError:
+            self.error(error_message)
+        if (size <= 5 or size > 20):
+            self.error(error_message)
+            return
+        self.game = Game(size)
+        self.brain = EmacsBrain(self.game, self.infos)
+        self.ok()
 
     def turn(self, arguments : list):
-        print("debug turn")
-        pass
+        x = 0
+        y = 0
+
+        if (len(arguments) != 3):
+            self.error("TURN need X and Y.")
+            return
+        try:
+            x = int(arguments[1])
+            y = int(arguments[2])
+        except ValueError:
+            self.error("TURN need X and Y as 2 integers.")
+            return
+        if not (self.game.set_piece(x, y, CaseState.OTHER)):
+            self.error("Opponent say bullshit.")
+            return
+        self.ok()
 
     def begin(self, arguments : list):
         print("debug begin")
@@ -100,8 +133,7 @@ class Piskvork:
         pass
 
     def about(self, arguments : list):
-        print("debug about")
-        pass
+        print("name=\"%s\", version=\"%s\", author=\"%s\", country=\"%s\"" % ("Gomme au fesses", "0.0.1", "Toto & Kebab", "FR"))
 
     def rectstart(self, arguments : list):
         print("debug rectstart")
@@ -125,8 +157,10 @@ class Piskvork:
         print("UNKNOWN %s" % (message))
 
     def error(self, message : str):
-        print("ERROR %s" % (message))
-        pass
+        print("ERROR - %s" % (message))
+
+    def ok(self):
+        print("OK - everything is good")
     
     def debug(self, message : str):
         pass
