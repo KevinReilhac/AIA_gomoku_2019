@@ -93,11 +93,12 @@ class Piskvork:
         if not (self.game.set_piece(x, y, CaseState.OTHER)):
             self.error("Opponent say bullshit.")
             return
-        self.ok()
+        answer = self.brain.play()
+        print("%d,%d" % (answer[0], answer[1]))
 
     def begin(self, arguments : list):
-        print("debug begin")
-        pass
+        answer = self.brain.play()
+        print("%d,%d" % (answer[0], answer[1]))
 
     def board(self, arguments : list):
         print("debug board")
