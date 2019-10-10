@@ -12,7 +12,7 @@ from Piskvork.InfosClass import Infos
 class EmacsBrain(ABrain):
 
     def __init__(self, game : Game, infos : Infos):
-        super.__init__(game, infos)
+        super(EmacsBrain, self).__init__(game, infos)
     
     def play(self):
         return (0, 0)

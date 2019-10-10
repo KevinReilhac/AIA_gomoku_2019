@@ -9,8 +9,9 @@
 import fileinput
 import string
 import array
+import sys
 from Piskvork.InfosClass import Infos
-from Piskvork.GameClass import Game, CaseState
+from Piskvork.GameClass import Game
 from AI.EmacsBrain import EmacsBrain
 
 
@@ -47,7 +48,7 @@ class Piskvork:
         commands = [
             self.start, self.turn, self.begin, self.board, self.info, 
             self.end, self.about, self.rectstart,
-            self.restart, self.takeback, self.play
+            self.restart, self.takeback, self.play, self.displayboard
         ]
 
         try:
@@ -67,15 +68,15 @@ class Piskvork:
         if (len(arguments) != 2):
             self.error(error_message)
         try:
-            size = int(arguments[0])
+            size = int(arguments[1])
         except ValueError:
             self.error(error_message)
-        if (size <= 5 or size > 20):
+            return
+        if (size < 5 or size > 20):
             self.error(error_message)
             return
-        self.game = Game(size)
+        self.game = Game(size, size)
         self.brain = EmacsBrain(self.game, self.infos)
-        self.ok()
 
     def turn(self, arguments : list):
         x = 0
@@ -90,19 +91,45 @@ class Piskvork:
         except ValueError:
             self.error("TURN need X and Y as 2 integers.")
             return
-        if not (self.game.set_piece(x, y, CaseState.OTHER)):
+        if not (self.game.set_piece(x, y, 2)):
             self.error("Opponent say bullshit.")
             return
         answer = self.brain.play()
         print("%d,%d" % (answer[0], answer[1]))
+        self.game.set_piece(answer[0], answer[1], 1)
 
     def begin(self, arguments : list):
         answer = self.brain.play()
         print("%d,%d" % (answer[0], answer[1]))
+        self.game.set_piece(answer[0], answer[1], 1)
 
     def board(self, arguments : list):
-        print("debug board")
-        pass
+        try:
+            for line in sys.stdin:
+                 if not (self.board_treat_line(line)):
+                    return
+        except EOFError:
+            pass
+        except KeyboardInterrupt:
+            pass
+
+    def board_treat_line(self, line : str):
+        line = line.strip()
+        if (line.upper() == "DONE"):
+            return (False)
+        arguments = line.split(", ")
+
+        try:
+            x = int(arguments[0])
+            y = int(arguments[1])
+            player = int(arguments[2])
+
+            if not (self.game.set_piece(x, y, player)):
+                self.error("Invalid values.")
+            return (True)
+        except ValueError:
+            self.error("Invalid arguments.")
+            return (True)
 
     def info(self, arguments : list):
         if (len(arguments) < 2):
@@ -131,13 +158,32 @@ class Piskvork:
 
     def end(self, arguments : list):
         self.quit_loop = True
-        pass
 
     def about(self, arguments : list):
         print("name=\"%s\", version=\"%s\", author=\"%s\", country=\"%s\"" % ("Gomme au fesses", "0.0.1", "Toto & Kebab", "FR"))
 
     def rectstart(self, arguments : list):
-        print("debug rectstart")
+        size_x = 0
+        size_y = 0
+        error_message = "rectangular board is not supported or other error"
+
+        if (len(arguments) != 3):
+            self.error(error_message)
+        try:
+            size_x = int(arguments[1])
+            size_y = int(arguments[2])
+        except ValueError:
+            self.error(error_message)
+            return
+        if (size_x < 5 or size_x > 20):
+            self.error(error_message)
+            return
+        if (size_y < 5 or size_y > 20):
+            self.error(error_message)
+            return
+        self.game = Game(size_x, size_y)
+        self.brain = EmacsBrain(self.game, self.infos)
+        print("OK - parameters are good")
         pass
 
     def restart(self, arguments : list):
@@ -145,13 +191,23 @@ class Piskvork:
         pass
 
     def takeback(self, arguments : list):
-        print("debug takeback")
-        pass
+        x = 0
+        y = 0
+
+        try:
+            x = int(arguments[1])
+            y = int(arguments[2])
+        except ValueError:
+            self.error("Invalid positions.")
+        if not (self.game.set_piece(x, y, 0)):
+            self.error("Wrong positions.")
 
     def play(self, arguments : list):
         print("debug play")
         pass
-
+    #------------------------------[Debug]---------------------------------#
+    def displayboard(self, arguments : list):
+        self.game.debug_print()
     #------------------------------[Responces]---------------------------------#
 
     def unknow(self, message : str):
@@ -160,9 +216,6 @@ class Piskvork:
     def error(self, message : str):
         print("ERROR - %s" % (message))
 
-    def ok(self):
-        print("OK - everything is good")
-    
     def debug(self, message : str):
         pass
 

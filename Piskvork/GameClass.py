@@ -6,33 +6,39 @@
 ##
 from enum import Enum
 
-class CaseState(Enum):
-    NONE = 0
-    ME = 1
-    OTHER = 2
-
 class Game:
     board = None
-    size = 0
+    size_x = 0
+    size_y = 0
 
-    def __init__(self, size : int):
-        self.board = [[CaseState.NONE] * size] * size
-        self.size = size
+    def __init__(self, size_x : int, size_y : int):
+        matrix = []
+        for _ in range(size_y):
+            a = []
+            for _ in range(size_x):
+                a.append(0)
+            matrix.append(a)
+        self.board = matrix
+        self.size_x = size_x
+        self.size_y = size_y
 
     def debug_print(self):
-        for row in self.board:
-            print(' '.join([str(elem) for elem in row]))
+        for i in range(self.size_y): 
+            for j in range(self.size_x): 
+                print(self.board[i][j], end = " ") 
+            print() 
 
-    def set_piece(self, x : int, y : int, player : CaseState):
-        if (x < 0 or x >= self.size):
+    def set_piece(self, x : int, y : int, player : int):
+        if (x < 0 or x >= self.size_x):
             return (False)
-        if (y < 0 or y >= self.size):
+        if (y < 0 or y >= self.size_y):
             return (False)
         self.board[x][y] = player
+        return (True)
     
     def get_piece(self, x : int, y : int):
-        if (x < 0 or x >= self.size):
+        if (x < 0 or x >= self.size_x):
             return (None)
-        if (y < 0 or y >= self.size):
+        if (y < 0 or y >= self.size_y):
             return (None)
         return (self.board[x][y])
