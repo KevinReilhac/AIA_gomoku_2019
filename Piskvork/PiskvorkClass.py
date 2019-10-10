@@ -34,6 +34,7 @@ class Piskvork:
 
     def treat_input(self, line : str):
         line = line.lower()
+        line = line.replace(',', ' ')
         line = line.strip()
         arguments = line.split()
         if (len(arguments) == 0):
@@ -187,8 +188,8 @@ class Piskvork:
         pass
 
     def restart(self, arguments : list):
-        print("debug restart")
-        pass
+        self.game = Game(self.game.size_x, self.game.size_y)
+        print("OK")
 
     def takeback(self, arguments : list):
         x = 0
@@ -203,7 +204,6 @@ class Piskvork:
             self.error("Wrong positions.")
 
     def play(self, arguments : list):
-        print("debug play")
         pass
     #------------------------------[Debug]---------------------------------#
     def displayboard(self, arguments : list):
