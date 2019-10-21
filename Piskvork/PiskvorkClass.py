@@ -78,6 +78,7 @@ class Piskvork:
             return
         self.game = Game(size, size)
         self.brain = EmacsBrain(self.game, self.infos)
+        self.brain.init_pos()
 
     def turn(self, arguments : list):
         x = 0
@@ -117,6 +118,9 @@ class Piskvork:
     def board_treat_line(self, line : str):
         line = line.strip()
         if (line.upper() == "DONE"):
+            answer = self.brain.play()
+            print("%d,%d" % (answer[0], answer[1]))
+            self.game.set_piece(answer[0], answer[1], 1)
             return (False)
         arguments = line.split(", ")
 
