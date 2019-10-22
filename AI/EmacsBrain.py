@@ -50,6 +50,8 @@ class EmacsBrain(ABrain):
 
     def heuristic_value(self, position):
         value = 0
+        i = 0
+        check_qtuple = []
 
         value += self.check_qtuple_1(position)
         value += self.check_qtuple_2(position)
@@ -61,7 +63,7 @@ class EmacsBrain(ABrain):
         value += self.check_qtuple_8(position)
         value += self.check_qtuple_9(position)
         value += self.check_qtuple_10(position)
-        value += self.check_qtuple_11(position)
+        value += self.check_qtuple_11(position) 
         value += self.check_qtuple_12(position)
         value += self.check_qtuple_13(position)
         value += self.check_qtuple_14(position)
@@ -205,7 +207,7 @@ class EmacsBrain(ABrain):
         return (0)
 
     def check_qtuple_6(self, position):
-    return 0
+        return 0
 
 
     def check_qtuple_7(self, position):
