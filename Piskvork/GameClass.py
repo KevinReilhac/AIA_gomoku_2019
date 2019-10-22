@@ -25,10 +25,12 @@ class Game:
     def debug_print(self):
         for i in range(self.size_y): 
             for j in range(self.size_x): 
-                print(self.board[i][j], end = " ") 
+                print(self.board[j][i], end = " ") 
             print() 
 
     def set_piece(self, x : int, y : int, player : int):
+        if (self.board == None):
+            return (False)
         if (x < 0 or x >= self.size_x):
             return (False)
         if (y < 0 or y >= self.size_y):

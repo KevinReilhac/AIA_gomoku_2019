@@ -68,6 +68,7 @@ class Piskvork:
 
         if (len(arguments) != 2):
             self.error(error_message)
+            return
         try:
             size = int(arguments[1])
         except ValueError:
@@ -84,6 +85,9 @@ class Piskvork:
         x = 0
         y = 0
 
+        if (self.game == None):
+            self.error("Need to START before")
+            return
         if (len(arguments) != 3):
             self.error("TURN need X and Y.")
             return
@@ -106,6 +110,9 @@ class Piskvork:
         self.game.set_piece(answer[0], answer[1], 1)
 
     def board(self, arguments : list):
+        if (self.game == None):
+            self.error("Need to START before")
+            return
         try:
             for line in sys.stdin:
                  if not (self.board_treat_line(line)):
