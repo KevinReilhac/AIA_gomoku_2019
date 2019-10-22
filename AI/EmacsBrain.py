@@ -8,6 +8,7 @@
 from AI.ABrain import ABrain
 from Piskvork.GameClass import Game
 from Piskvork.InfosClass import Infos
+from Utils.Sort import natural_keys
 
 class Position():
 
@@ -32,7 +33,7 @@ class EmacsBrain(ABrain):
         x = 0
         y = 0
         for line in self.game.board:
-            for column in line:
+            for _ in line:
                 self.positions.append(Position(self.game, self.infos, x, y))
                 y += 1
             y = 0
@@ -50,31 +51,12 @@ class EmacsBrain(ABrain):
 
     def heuristic_value(self, position):
         value = 0
-        i = 0
-        check_qtuple = []
-
-        value += self.check_qtuple_1(position)
-        value += self.check_qtuple_2(position)
-        value += self.check_qtuple_3(position)
-        value += self.check_qtuple_4(position)
-        value += self.check_qtuple_5(position)
-        value += self.check_qtuple_6(position)
-        value += self.check_qtuple_7(position)
-        value += self.check_qtuple_8(position)
-        value += self.check_qtuple_9(position)
-        value += self.check_qtuple_10(position)
-        value += self.check_qtuple_11(position) 
-        value += self.check_qtuple_12(position)
-        value += self.check_qtuple_13(position)
-        value += self.check_qtuple_14(position)
-        value += self.check_qtuple_15(position)
-        value += self.check_qtuple_16(position)
-        value += self.check_qtuple_17(position)
-        value += self.check_qtuple_18(position)
-        value += self.check_qtuple_19(position)
-        value += self.check_qtuple_20(position)
+        check_qtuple_list = self.get_check_methods()
+        for check_qtuple in check_qtuple_list:
+            value += check_qtuple(position)
         print(value)
         return (value)
+    
     
     def explore_board(self):
         current_val = 0
@@ -104,6 +86,12 @@ class EmacsBrain(ABrain):
             return (update_score(0, enemy_stone_counter, False))
         return (0)
 
+    def get_check_methods(self):
+        allMethods = dir(self)
+        allMethods.sort(key=natural_keys)
+        allMethods = map(lambda x: getattr(self, x), allMethods)
+        checkMethods = [x for x in allMethods if callable(x) and "check_qtuple" in x.__name__]
+        return checkMethods
 
     def check_qtuple_1(self, position : Position):
         x = position.x
