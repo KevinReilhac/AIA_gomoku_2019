@@ -17,8 +17,7 @@ class Position():
         self.infos = infos
         self.x = x
         self.y = y
-        self.qtuples = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True,True, True, True, True, True]
-
+        self.qtuples = [True] * 20
 
 class EmacsBrain(ABrain):
 
@@ -54,7 +53,6 @@ class EmacsBrain(ABrain):
         check_qtuple_list = self.get_check_methods()
         for check_qtuple in check_qtuple_list:
             value += check_qtuple(position)
-        print(value)
         return (value)
     
     
@@ -180,11 +178,11 @@ class EmacsBrain(ABrain):
         qtuple = []
         value = 0
 
-        if 0 <= x - 4 < self.game.size_x:
-            qtuple.append(self.game.board[x][y])
-            qtuple.append(self.game.board[x][y])
-            qtuple.append(self.game.board[x][y])
-            qtuple.append(self.game.board[x][y])
+        if 0 <= x + 4 < self.game.size_x and 0 <= y - 4 < self.game.size_y:
+            qtuple.append(self.game.board[x + 4][y - 4])
+            qtuple.append(self.game.board[x + 3][y - 3])
+            qtuple.append(self.game.board[x + 2][y - 2])
+            qtuple.append(self.game.board[x + 1][y - 1])
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[4] = False
@@ -195,38 +193,318 @@ class EmacsBrain(ABrain):
         return (0)
 
     def check_qtuple_6(self, position):
-        return 0
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x + 4 < self.game.size_x:
+            qtuple.append(self.game.board[x + 4][y])
+            qtuple.append(self.game.board[x + 3][y])
+            qtuple.append(self.game.board[x + 2][y])
+            qtuple.append(self.game.board[x + 1][y])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[5] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
 
 
     def check_qtuple_7(self, position):
-        return 0
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x + 4 < self.game.size_x and 0 <= y + 4 < self.game.size_y:
+            qtuple.append(self.game.board[x + 4][y + 4])
+            qtuple.append(self.game.board[x + 3][y + 3])
+            qtuple.append(self.game.board[x + 2][y + 2])
+            qtuple.append(self.game.board[x + 1][y + 1])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[6] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
     def check_qtuple_8(self, position):
-        return 0
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= y + 4 < self.game.size_y:
+            qtuple.append(self.game.board[x][y + 4])
+            qtuple.append(self.game.board[x][y + 3])
+            qtuple.append(self.game.board[x][y + 2])
+            qtuple.append(self.game.board[x][y + 1])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[7] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
     def check_qtuple_9(self, position):
-        return 0
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 3 and x + 1 < self.game.size_x and y + 3 < self.game.size_y and 0 <= y - 1:
+            qtuple.append(self.game.board[x - 3][y + 3])
+            qtuple.append(self.game.board[x - 2][y + 2])
+            qtuple.append(self.game.board[x - 1][y + 1])
+            qtuple.append(self.game.board[x + 1][y - 1])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[8] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
     def check_qtuple_10(self, position):
-        return 0
-    def check_qtuple_11(self, position): 
-        return 0
-    def check_qtuple_12(self, position):
-        return 0
-    def check_qtuple_13(self, position):
-        return 0
-    def check_qtuple_14(self, position):
-        return 0
-    def check_qtuple_15(self, position):
-        return 0
-    def check_qtuple_16(self, position): 
-        return 0   
-    def check_qtuple_17(self, position):
-        return 0
-    def check_qtuple_18(self, position):
-        return 0
-    def check_qtuple_19(self, position):
-        return 0
-    def check_qtuple_20(self, position):
-         return 0   
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 2 and x + 2 < self.game.size_x and y + 2 < self.game.size_y and 0 <= y - 2:
+            qtuple.append(self.game.board[x - 2][y + 2])
+            qtuple.append(self.game.board[x - 1][y + 1])
+            qtuple.append(self.game.board[x + 1][y - 1])
+            qtuple.append(self.game.board[x + 2][y - 2])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[9] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
     
+
+    def check_qtuple_11(self, position): 
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 1 and x + 3 < self.game.size_x and y + 1 < self.game.size_y and 0 <= y - 3:
+            qtuple.append(self.game.board[x - 1][y + 1])
+            qtuple.append(self.game.board[x - 1][y - 1])
+            qtuple.append(self.game.board[x + 2][y - 2])
+            qtuple.append(self.game.board[x + 3][y - 3])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[10] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_12(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 3 and x + 1 < self.game.size_x:
+            qtuple.append(self.game.board[x - 3][y])
+            qtuple.append(self.game.board[x - 2][y])
+            qtuple.append(self.game.board[x - 3][y])
+            qtuple.append(self.game.board[x + 1][y])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[11] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_13(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 2 and x + 2 < self.game.size_x:
+            qtuple.append(self.game.board[x - 2][y])
+            qtuple.append(self.game.board[x - 1][y])
+            qtuple.append(self.game.board[x + 1][y])
+            qtuple.append(self.game.board[x + 2][y])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[12] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_14(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 1 and x + 3 < self.game.size_x:
+            qtuple.append(self.game.board[x - 1][y])
+            qtuple.append(self.game.board[x + 1][y])
+            qtuple.append(self.game.board[x + 2][y])
+            qtuple.append(self.game.board[x + 3][y])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[13] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_15(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 3 and x + 1 < self.game.size_x and 0 <= y - 3 and y + 1 < self.game.size_y:
+            qtuple.append(self.game.board[x - 3][y - 3])
+            qtuple.append(self.game.board[x - 2][y - 2])
+            qtuple.append(self.game.board[x - 1][y - 1])
+            qtuple.append(self.game.board[x + 1][y + 1])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[14] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_16(self, position): 
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 2 and x + 2 < self.game.size_x and 0 <= y - 2 and y + 2 < self.game.size_y:
+            qtuple.append(self.game.board[x - 2][y - 2])
+            qtuple.append(self.game.board[x - 1][y - 1])
+            qtuple.append(self.game.board[x + 1][y + 1])
+            qtuple.append(self.game.board[x + 2][y + 2])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[15] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_17(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= x - 1 and x + 3 < self.game.size_x and 0 <= y - 1 and y + 3 < self.game.size_y:
+            qtuple.append(self.game.board[x - 1][y - 1])
+            qtuple.append(self.game.board[x + 1][y + 1])
+            qtuple.append(self.game.board[x + 2][y + 2])
+            qtuple.append(self.game.board[x + 3][y + 3])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[16] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+    def check_qtuple_18(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= y - 3 and y + 1 < self.game.size_y:
+            qtuple.append(self.game.board[x][y - 3])
+            qtuple.append(self.game.board[x][y - 2])
+            qtuple.append(self.game.board[x][y - 1])
+            qtuple.append(self.game.board[x][y + 1])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[17] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_19(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= y - 2 and y + 2 < self.game.size_y:
+            qtuple.append(self.game.board[x][y - 2])
+            qtuple.append(self.game.board[x][y - 1])
+            qtuple.append(self.game.board[x][y + 1])
+            qtuple.append(self.game.board[x][y + 2])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[18] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
+    def check_qtuple_20(self, position):
+        x = position.x
+        y = position.y
+        qtuple = []
+        value = 0
+
+        if 0 <= y - 1 and y + 3 < self.game.size_y:
+            qtuple.append(self.game.board[x][y - 1])
+            qtuple.append(self.game.board[x][y + 1])
+            qtuple.append(self.game.board[x][y + 2])
+            qtuple.append(self.game.board[x][y + 3])
+            value = self.evaluate_qtuple(qtuple)
+            if value == 1:
+                position.qtuples[18] = False
+                value = 0
+            return (value)
+        else :
+            return (0)
+        return (0)
+
+
 def update_score(value : int, stone_nb : int, attack : bool):
 
         if attack == True and stone_nb == 1:
