@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 ##
 ## EPITECH PROJECT, 2019
 ## AIA_gomoku_2019
