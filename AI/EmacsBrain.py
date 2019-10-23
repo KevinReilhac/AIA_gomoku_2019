@@ -39,6 +39,9 @@ class EmacsBrain(ABrain):
             x += 1
 
     def play(self):
+        self.best_value = 0
+        self.best_x = 0
+        self.best_y = 0
         self.explore_board()
         return (self.best_x, self.best_y)
 

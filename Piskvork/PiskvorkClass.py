@@ -105,6 +105,9 @@ class Piskvork:
         self.game.set_piece(answer[0], answer[1], 1)
 
     def begin(self, arguments : list):
+        if self.game == None:
+            self.error("Need to START before")
+            return
         answer = self.brain.play()
         print("%d,%d" % (answer[0], answer[1]))
         self.game.set_piece(answer[0], answer[1], 1)
