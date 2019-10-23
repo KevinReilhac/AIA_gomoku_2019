@@ -43,6 +43,8 @@ class EmacsBrain(ABrain):
         self.best_x = 0
         self.best_y = 0
         self.explore_board()
+        if self.best_value == 0:
+            return (int(self.game.size_x / 2), int(self.game.size_y / 2))
         return (self.best_x, self.best_y)
 
     def is_empty_pos(self, x, y):
