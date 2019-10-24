@@ -6,13 +6,13 @@
 ## brainClass
 ##
 
-import fileinput
 import string
 import array
 import sys
 from Piskvork.InfosClass import Infos
 from Piskvork.GameClass import Game
 from AI.EmacsBrain import EmacsBrain
+from Utils.Utils import flush_print, print_pos
 
 
 class Piskvork:
@@ -23,7 +23,7 @@ class Piskvork:
 
     def read_entry_loop(self):
         try:
-            for line in fileinput.input():
+            for line in sys.stdin:
                 self.treat_input(line)
                 if (self.quit_loop):
                     break
@@ -58,7 +58,6 @@ class Piskvork:
                 return (method)
         except AttributeError:
             return (AttributeError)
-        method()
 
     #-------------------------------[Commands]---------------------------------#
 
@@ -80,6 +79,7 @@ class Piskvork:
         self.game = Game(size, size)
         self.brain = EmacsBrain(self.game, self.infos)
         self.brain.init_pos()
+        flush_print("OK")
 
     def turn(self, arguments : list):
         x = 0
@@ -101,7 +101,7 @@ class Piskvork:
             self.error("Opponent say bullshit.")
             return
         answer = self.brain.play()
-        print("%d,%d" % (answer[0], answer[1]))
+        print_pos(answer[0], answer[1])
         self.game.set_piece(answer[0], answer[1], 1)
 
     def begin(self, arguments : list):
@@ -109,7 +109,7 @@ class Piskvork:
             self.error("Need to START before")
             return
         answer = self.brain.play()
-        print("%d,%d" % (answer[0], answer[1]))
+        print_pos(answer[0], answer[1])
         self.game.set_piece(answer[0], answer[1], 1)
 
     def board(self, arguments : list):
@@ -175,7 +175,7 @@ class Piskvork:
         self.quit_loop = True
 
     def about(self, arguments : list):
-        print("name=\"%s\", version=\"%s\", author=\"%s\", country=\"%s\"" % ("Gomme au fesses", "0.0.1", "Toto & Kebab", "FR"))
+        flush_print("name=\"%s\", version=\"%s\", author=\"%s\", country=\"%s\"" % ("Gomme au fesses", "0.2.0", "Toto & Kebab", "FR"))
 
     def rectstart(self, arguments : list):
         size_x = 0
@@ -198,12 +198,12 @@ class Piskvork:
             return
         self.game = Game(size_x, size_y)
         self.brain = EmacsBrain(self.game, self.infos)
-        print("OK - parameters are good")
+        flush_print("OK - parameters are good")
         pass
 
     def restart(self, arguments : list):
         self.game = Game(self.game.size_x, self.game.size_y)
-        print("OK")
+        flush_print("OK")
 
     def takeback(self, arguments : list):
         x = 0

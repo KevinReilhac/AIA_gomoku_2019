@@ -35,6 +35,8 @@ class Game:
             return (False)
         if (y < 0 or y >= self.size_y):
             return (False)
+        if (self.board[x][y] != 0):
+            return (False)
         self.board[x][y] = player
         return (True)
     
