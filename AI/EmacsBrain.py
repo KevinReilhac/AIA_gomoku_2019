@@ -57,7 +57,7 @@ class EmacsBrain(ABrain):
         value = 0
         check_qtuple_list = self.get_check_methods()
         for check_qtuple in check_qtuple_list:
-            value += check_qtuple(position)
+            value += check_qtuple(position)            
         return (value)
     
     
@@ -96,6 +96,13 @@ class EmacsBrain(ABrain):
         checkMethods = [x for x in allMethods if callable(x) and "check_qtuple" in x.__name__]
         return checkMethods
 
+    def special_check(self, qtuple, value):
+        if qtuple[0] == 0 and qtuple[1] == 1 and qtuple[2] == 1 and qtuple[3] == 1:
+            print("DEBUG SPECIAL")
+            return (value + 5000000)
+        else:
+            return (value)
+
     def check_qtuple_1(self, position : Position):
         x = position.x
         y = position.y
@@ -107,6 +114,9 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 3][y + 3])
             qtuple.append(self.game.board[x - 2][y + 2])
             qtuple.append(self.game.board[x - 1][y + 1])
+            value = self.evaluate_qtuple(qtuple)
+            if x + 1 < self.game.size_x and y - 1 >= 0 and self.game.board[x + 1][y - 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[0] = False
                 value = 0
@@ -127,6 +137,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 2][y])
             qtuple.append(self.game.board[x - 1][y])
             value = self.evaluate_qtuple(qtuple)
+            if x + 1 < self.game.size_x and self.game.board[x + 1][y] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[1] = False
                 value = 0
@@ -148,6 +160,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 2][y - 2])
             qtuple.append(self.game.board[x - 1][y - 1])
             value = self.evaluate_qtuple(qtuple)
+            if x + 1 < self.game.size_x and y + 1 < self.game.size_y and self.game.board[x + 1][y + 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[2] = False
                 value = 0
@@ -168,6 +182,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y - 2])
             qtuple.append(self.game.board[x][y - 1])
             value = self.evaluate_qtuple(qtuple)
+            if y + 1 < self.game.size_y and self.game.board[x][y + 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[3] = False
                 value = 0
@@ -189,6 +205,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 2][y - 2])
             qtuple.append(self.game.board[x + 1][y - 1])
             value = self.evaluate_qtuple(qtuple)
+            if y + 1 < self.game.size_y and x - 1 >= 0 and self.game.board[x - 1][y + 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[4] = False
                 value = 0
@@ -209,6 +227,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 2][y])
             qtuple.append(self.game.board[x + 1][y])
             value = self.evaluate_qtuple(qtuple)
+            if x - 1 >= 0 and self.game.board[x - 1][y] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[5] = False
                 value = 0
@@ -230,6 +250,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 2][y + 2])
             qtuple.append(self.game.board[x + 1][y + 1])
             value = self.evaluate_qtuple(qtuple)
+            if x - 1 >= 0 and y - 1 >= 0 and self.game.board[x - 1][y - 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[6] = False
                 value = 0
@@ -250,6 +272,8 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y + 2])
             qtuple.append(self.game.board[x][y + 1])
             value = self.evaluate_qtuple(qtuple)
+            if y - 1 >= 0 and self.game.board[x][y - 1] == 0:
+                value = self.special_check(qtuple, value)
             if value == 1:
                 position.qtuples[7] = False
                 value = 0
@@ -519,7 +543,7 @@ def update_score(value : int, stone_nb : int, attack : bool):
         if attack == True and stone_nb == 3:
             return value + 15000
         if attack == True and stone_nb == 4:
-            return value + 800000
+            return value + 8000000000
         if attack == False and stone_nb == 1:
             return value + 15
         if attack ==   False and stone_nb == 2:
@@ -527,4 +551,4 @@ def update_score(value : int, stone_nb : int, attack : bool):
         if attack == False and stone_nb == 3:
             return value + 1800
         if attack == False and stone_nb == 4:
-            return value + 100000
+            return value + 1000000000
