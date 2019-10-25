@@ -227,10 +227,10 @@ class Piskvork:
     #------------------------------[Responces]---------------------------------#
 
     def unknow(self, message : str):
-        print("UNKNOWN %s" % (message))
+        flush_print("UNKNOWN %s" % (message))
 
     def error(self, message : str):
-        print("ERROR %s" % (message))
+        flush_print("ERROR %s" % (message))
 
     def debug(self, message : str):
         pass
