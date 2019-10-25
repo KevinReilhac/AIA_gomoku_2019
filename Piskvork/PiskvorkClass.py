@@ -185,6 +185,7 @@ class Piskvork:
 
         if (len(arguments) != 3):
             self.error(error_message)
+            return
         try:
             size_x = int(arguments[1])
             size_y = int(arguments[2])
@@ -199,7 +200,7 @@ class Piskvork:
             return
         self.game = Game(size_x, size_y)
         self.brain = EmacsBrain(self.game, self.infos)
-        flush_print("OK - parameters are good")
+        flush_print("OK")
         pass
 
     def restart(self, arguments : list):

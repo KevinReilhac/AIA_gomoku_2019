@@ -13,9 +13,9 @@ class Game:
 
     def __init__(self, size_x : int, size_y : int):
         matrix = []
-        for _ in range(size_y):
+        for _ in range(size_x):
             a = []
-            for _ in range(size_x):
+            for _ in range(size_y):
                 a.append(0)
             matrix.append(a)
         self.board = matrix
@@ -31,9 +31,9 @@ class Game:
     def set_piece(self, x : int, y : int, player : int):
         if (self.board == None):
             return (False)
-        if (x < 0 or x >= self.size_x):
+        if (x < 0 or x > self.size_x):
             return (False)
-        if (y < 0 or y >= self.size_y):
+        if (y < 0 or y > self.size_y):
             return (False)
         if (self.board[x][y] != 0):
             return (False)
