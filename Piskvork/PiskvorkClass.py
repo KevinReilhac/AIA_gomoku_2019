@@ -132,7 +132,8 @@ class Piskvork:
             print("%d,%d" % (answer[0], answer[1]))
             self.game.set_piece(answer[0], answer[1], 1)
             return (False)
-        arguments = line.split(", ")
+        arguments = line.split(",")
+        arguments = list(map(lambda arg: arg.strip(), arguments))
 
         try:
             x = int(arguments[0])
