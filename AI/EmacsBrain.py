@@ -27,6 +27,7 @@ class EmacsBrain(ABrain):
         self.best_x = 0
         self.best_y = 0
         self.positions = []
+        self.init_pos()
 
     def init_pos(self):
         x = 0

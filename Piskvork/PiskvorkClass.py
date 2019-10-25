@@ -78,7 +78,6 @@ class Piskvork:
             return
         self.game = Game(size, size)
         self.brain = EmacsBrain(self.game, self.infos)
-        self.brain.init_pos()
         flush_print("OK")
 
     def turn(self, arguments : list):
@@ -205,6 +204,7 @@ class Piskvork:
 
     def restart(self, arguments : list):
         self.game = Game(self.game.size_x, self.game.size_y)
+        self.brain = EmacsBrain(self.game, self.infos)
         flush_print("OK")
 
     def takeback(self, arguments : list):
