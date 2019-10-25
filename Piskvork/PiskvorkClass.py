@@ -63,7 +63,7 @@ class Piskvork:
 
     def start(self, arguments : list):
         size = 0
-        error_message = "unsupported size or other error"
+        error_message = "unsupported size"
 
         if (len(arguments) != 2):
             self.error(error_message)
@@ -230,7 +230,7 @@ class Piskvork:
         print("UNKNOWN %s" % (message))
 
     def error(self, message : str):
-        print("ERROR - %s" % (message))
+        print("ERROR %s" % (message))
 
     def debug(self, message : str):
         pass
