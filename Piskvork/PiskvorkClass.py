@@ -128,7 +128,7 @@ class Piskvork:
         line = line.strip()
         if (line.upper() == "DONE"):
             answer = self.brain.play()
-            print("%d,%d" % (answer[0], answer[1]))
+            flush_print("%d,%d" % (answer[0], answer[1]))
             self.game.set_piece(answer[0], answer[1], 1)
             return (False)
         arguments = line.split(",")
@@ -139,6 +139,9 @@ class Piskvork:
             y = int(arguments[1])
             player = int(arguments[2])
 
+            if (player != 1 and player != 2):
+                self.error("Invalid values.")
+                return (False)
             if not (self.game.set_piece(x, y, player)):
                 self.error("Invalid values.")
             return (True)
