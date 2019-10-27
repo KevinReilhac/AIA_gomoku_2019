@@ -101,6 +101,9 @@ class EmacsBrain(ABrain):
         if qtuple[0] == 0 and qtuple[1] == 1 and qtuple[2] == 1 and qtuple[3] == 1:
             print("DEBUG SPECIAL")
             return (value + 5000000)
+        elif qtuple[0] == 0 and qtuple[1] == 2 and qtuple[2] == 2 and qtuple[3] == 2:
+            print("DEBUG SPECIAL DEFENSE")
+            return (value + 1000000)
         else:
             return (value)
 
@@ -356,7 +359,7 @@ class EmacsBrain(ABrain):
         if 0 <= x - 3 and x + 1 < self.game.size_x:
             qtuple.append(self.game.board[x - 3][y])
             qtuple.append(self.game.board[x - 2][y])
-            qtuple.append(self.game.board[x - 3][y])
+            qtuple.append(self.game.board[x - 1][y])
             qtuple.append(self.game.board[x + 1][y])
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
