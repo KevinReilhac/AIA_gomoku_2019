@@ -114,8 +114,10 @@ class EmacsBrain(ABrain):
 
     def check_two_two(self, value):
         if self.two_two_pattern_attack_counter >= 2:
+            print("DEBUG TWO TWO ATT")
             return (value + 500000)
         elif self.two_two_pattern_defense_counter >= 2:
+            print("DEBUG TWO TWO DEF")
             return (value + 300000)
         return (value)
 
