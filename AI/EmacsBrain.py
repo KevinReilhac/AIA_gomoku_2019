@@ -28,6 +28,8 @@ class EmacsBrain(ABrain):
         self.best_y = 0
         self.positions = []
         self.init_pos()
+        self.two_two_pattern_attack_counter = 0
+        self.two_two_pattern_defense_counter = 0
 
     def init_pos(self):
         x = 0
@@ -58,7 +60,10 @@ class EmacsBrain(ABrain):
         value = 0
         check_qtuple_list = self.get_check_methods()
         for check_qtuple in check_qtuple_list:
-            value += check_qtuple(position)            
+            value += check_qtuple(position)
+        value += self.check_two_two(value)
+        self.two_two_pattern_attack_counter = 0
+        self.two_two_pattern_defense_counter = 0
         return (value)
     
     
@@ -107,6 +112,31 @@ class EmacsBrain(ABrain):
         else:
             return (value)
 
+    def check_two_two(self, value):
+        if self.two_two_pattern_attack_counter >= 2:
+            return (value + 500000)
+        elif self.two_two_pattern_defense_counter >= 2:
+            return (value + 300000)
+        return (value)
+
+    def incr_two_two_counters(self, qtuple):
+        att_count = 0
+        def_count = 0
+        blank_count = 0
+
+        for elem in qtuple:
+            if elem == 1:
+                att_count += 1
+            elif elem == 2:
+                def_count += 1
+            else:
+                blank_count += 1
+        if att_count == 2 and blank_count == 2:
+            self.two_two_pattern_attack_counter += 1
+        elif def_count == 2 and blank_count == 2:
+            self.two_two_pattern_defense_counter += 1
+
+
     def check_qtuple_1(self, position : Position):
         x = position.x
         y = position.y
@@ -118,6 +148,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 3][y + 3])
             qtuple.append(self.game.board[x - 2][y + 2])
             qtuple.append(self.game.board[x - 1][y + 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if x + 1 < self.game.size_x and y - 1 >= 0 and self.game.board[x + 1][y - 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -140,6 +171,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 3][y])
             qtuple.append(self.game.board[x - 2][y])
             qtuple.append(self.game.board[x - 1][y])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if x + 1 < self.game.size_x and self.game.board[x + 1][y] == 0:
                 value = self.special_check(qtuple, value)
@@ -163,6 +195,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 3][y - 3])
             qtuple.append(self.game.board[x - 2][y - 2])
             qtuple.append(self.game.board[x - 1][y - 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if x + 1 < self.game.size_x and y + 1 < self.game.size_y and self.game.board[x + 1][y + 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -185,6 +218,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y - 3])
             qtuple.append(self.game.board[x][y - 2])
             qtuple.append(self.game.board[x][y - 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if y + 1 < self.game.size_y and self.game.board[x][y + 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -208,6 +242,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 3][y - 3])
             qtuple.append(self.game.board[x + 2][y - 2])
             qtuple.append(self.game.board[x + 1][y - 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if y + 1 < self.game.size_y and x - 1 >= 0 and self.game.board[x - 1][y + 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -230,6 +265,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 3][y])
             qtuple.append(self.game.board[x + 2][y])
             qtuple.append(self.game.board[x + 1][y])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if x - 1 >= 0 and self.game.board[x - 1][y] == 0:
                 value = self.special_check(qtuple, value)
@@ -253,6 +289,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 3][y + 3])
             qtuple.append(self.game.board[x + 2][y + 2])
             qtuple.append(self.game.board[x + 1][y + 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if x - 1 >= 0 and y - 1 >= 0 and self.game.board[x - 1][y - 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -275,6 +312,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y + 3])
             qtuple.append(self.game.board[x][y + 2])
             qtuple.append(self.game.board[x][y + 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if y - 1 >= 0 and self.game.board[x][y - 1] == 0:
                 value = self.special_check(qtuple, value)
@@ -298,6 +336,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 2][y + 2])
             qtuple.append(self.game.board[x - 1][y + 1])
             qtuple.append(self.game.board[x + 1][y - 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[8] = False
@@ -319,6 +358,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 1][y + 1])
             qtuple.append(self.game.board[x + 1][y - 1])
             qtuple.append(self.game.board[x + 2][y - 2])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[9] = False
@@ -340,6 +380,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 1][y - 1])
             qtuple.append(self.game.board[x + 2][y - 2])
             qtuple.append(self.game.board[x + 3][y - 3])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[10] = False
@@ -361,6 +402,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 2][y])
             qtuple.append(self.game.board[x - 1][y])
             qtuple.append(self.game.board[x + 1][y])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[11] = False
@@ -382,6 +424,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 1][y])
             qtuple.append(self.game.board[x + 1][y])
             qtuple.append(self.game.board[x + 2][y])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[12] = False
@@ -403,6 +446,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 1][y])
             qtuple.append(self.game.board[x + 2][y])
             qtuple.append(self.game.board[x + 3][y])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[13] = False
@@ -424,6 +468,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 2][y - 2])
             qtuple.append(self.game.board[x - 1][y - 1])
             qtuple.append(self.game.board[x + 1][y + 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[14] = False
@@ -445,6 +490,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x - 1][y - 1])
             qtuple.append(self.game.board[x + 1][y + 1])
             qtuple.append(self.game.board[x + 2][y + 2])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[15] = False
@@ -466,6 +512,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x + 1][y + 1])
             qtuple.append(self.game.board[x + 2][y + 2])
             qtuple.append(self.game.board[x + 3][y + 3])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[16] = False
@@ -486,6 +533,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y - 2])
             qtuple.append(self.game.board[x][y - 1])
             qtuple.append(self.game.board[x][y + 1])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[17] = False
@@ -507,6 +555,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y - 1])
             qtuple.append(self.game.board[x][y + 1])
             qtuple.append(self.game.board[x][y + 2])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[18] = False
@@ -528,6 +577,7 @@ class EmacsBrain(ABrain):
             qtuple.append(self.game.board[x][y + 1])
             qtuple.append(self.game.board[x][y + 2])
             qtuple.append(self.game.board[x][y + 3])
+            self.incr_two_two_counters(qtuple)
             value = self.evaluate_qtuple(qtuple)
             if value == 1:
                 position.qtuples[18] = False
